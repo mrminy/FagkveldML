@@ -70,7 +70,6 @@ def test_my_img(img_name, show_img=False):
     my_image /= 255.
     my_pred = model.predict_proba(my_image)
     print("My pred (" + img_name + "):", np.argmax(my_pred))
-    np.set_printoptions(precision=1)
     print("My pred probability (" + img_name + "):", my_pred[0])
 
 
@@ -99,4 +98,5 @@ print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 
 # Test an image on your local drive
+np.set_printoptions(precision=3)
 test_my_img('my_two.png', show_img=True)

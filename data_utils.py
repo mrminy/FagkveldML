@@ -57,6 +57,7 @@ def get_classification_dataset(test_size=0.3):
 def plot_confusion_matrix(y_test, y_pred, classes=None, normalize=True, title='Confusion matrix', cmap=plt.cm.Blues):
     """
     Copied from: http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
+
     This function prints and plots the confusion matrix.
     Normalization can be applied by setting `normalize=True`.
     """
@@ -91,7 +92,13 @@ def plot_image(img_arr):
 
 
 def get_my_image(path, wanted_shape=(28, 28)):
-    img = Image.open(path)
+    """
+    Fetch a grayscale image on your local drive. Resize to a wanted shape is possible.
+    :param path: path to image
+    :param wanted_shape: if None, no resizing will be done. Otherwize, the image will be resized to the wanted shape
+    :return: the local image as a numpy array
+    """
+    img = Image.open(path).convert('L')
     img.load()
     data = np.asarray(img, dtype="float32")
     if wanted_shape is not None:
