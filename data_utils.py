@@ -1,6 +1,8 @@
 import itertools
 import numpy as np
+from PIL import Image
 from matplotlib import pyplot as plt
+from scipy.misc import imresize
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 
@@ -83,8 +85,23 @@ def plot_confusion_matrix(y_test, y_pred, classes=None, normalize=True, title='C
     plt.show()
 
 
+def plot_image(img_arr):
+    plt.imshow(img_arr, cmap='gray')
+    plt.show()
+
+
+def get_my_image(path, wanted_shape=(28, 28)):
+    img = Image.open(path)
+    img.load()
+    data = np.asarray(img, dtype="float32")
+    if wanted_shape is not None:
+        data = imresize(data, wanted_shape)
+    return np.array([data], dtype="float32")
+
+
 if __name__ == '__main__':
     # For testing purpose only...
-    get_simple_classification_dataset()
-    get_classification_dataset()
-    get_mnist()
+    # get_simple_classification_dataset()
+    # get_classification_dataset()
+    # get_mnist()
+    get_my_image('my_nine.png')
