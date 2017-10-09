@@ -65,7 +65,8 @@ def test_my_img(img_name, show_img=False):
     """
     my_image = get_my_image('my_imgs/' + img_name)
     if show_img:
-        plot_image(my_image[0])
+        print("Showing local image file:", img_name)
+        plot_image(my_image[0], title=img_name)
     my_image = np.array([my_image[0].flatten()])
     my_image /= 255.
     my_pred = model.predict_proba(my_image)
@@ -97,6 +98,8 @@ score = model.evaluate(x_test, y_test, verbose=0)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 
+# Nicer prints to console
+np.set_printoptions(precision=3, suppress=True)
+
 # Test an image on your local drive
-np.set_printoptions(precision=3)
 test_my_img('my_two.png', show_img=True)

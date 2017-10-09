@@ -86,8 +86,10 @@ def plot_confusion_matrix(y_test, y_pred, classes=None, normalize=True, title='C
     plt.show()
 
 
-def plot_image(img_arr):
+def plot_image(img_arr, title=None):
     plt.imshow(img_arr, cmap='gray')
+    if title is not None:
+        plt.title(title)
     plt.show()
 
 
