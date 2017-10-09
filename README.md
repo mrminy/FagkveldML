@@ -1,2 +1,2 @@
 # FagkveldML
-Repository for "Fagkveld: Intro til Maskinlæring"
+Kode for fagkvelden: Intro til Maskinlæring 2017
