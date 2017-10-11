@@ -28,7 +28,7 @@ def train_and_score_model(clf, x_train, x_test, y_train, y_test):
 
     score = clf.score(x_test, y_test)
     print("Accuracy: %1.4f" % score)
-    plot_confusion_matrix(y_test, preds)
+    plot_confusion_matrix(y_test, preds, title=type(clf).__name__)
     print("--------------")
 
 
