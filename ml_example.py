@@ -10,7 +10,7 @@ Script for training and testing classical machine learning models on classificat
 """
 
 
-def train_and_score_model(clf, x_train, x_test, y_train, y_test):
+def train_and_score_model(clf, x_train, x_test, y_train, y_test, classes=None):
     """
     Trains a model (clf) with training set and evaluates on test set
     :param clf: an untrained classification model
@@ -19,7 +19,8 @@ def train_and_score_model(clf, x_train, x_test, y_train, y_test):
     :param y_train: training set of labels
     :param y_test: test set of labels
     """
-    print(clf)
+    classifier = type(clf).__name__
+    print(classifier)
     clf.fit(x_train, y_train)
 
     preds = clf.predict(x_test)
@@ -28,25 +29,27 @@ def train_and_score_model(clf, x_train, x_test, y_train, y_test):
 
     score = clf.score(x_test, y_test)
     print("Accuracy: %1.4f" % score)
-    plot_confusion_matrix(y_test, preds, title=type(clf).__name__)
+    plot_confusion_matrix(y_test, preds, title=classifier, classes=classes)
     print("--------------")
 
 
-# Fetch simple dataset
+# Fetch simple dataset (iris flower data)
 x_train, x_test, y_train, y_test = get_simple_classification_dataset(test_size=0.5)
+classes = ['setosa', 'versicolor', 'virginica']
 
-# Uncomment this line to use another dataset
+# Uncomment next lines to use another dataset (breast cancer data)
 # x_train, x_test, y_train, y_test = get_classification_dataset(test_size=0.5)
+# classes = ['Cancerous', 'Noncancerous']
 
 # Do classification with different algorithms from sklearn
 clf = KNeighborsClassifier()
-train_and_score_model(clf, x_train, x_test, y_train, y_test)
+train_and_score_model(clf, x_train, x_test, y_train, y_test, classes=classes)
 
 clf = GaussianNB()
-train_and_score_model(clf, x_train, x_test, y_train, y_test)
+train_and_score_model(clf, x_train, x_test, y_train, y_test, classes=classes)
 
 clf = DecisionTreeClassifier()
-train_and_score_model(clf, x_train, x_test, y_train, y_test)
+train_and_score_model(clf, x_train, x_test, y_train, y_test, classes=classes)
 
 clf = RandomForestClassifier()
-train_and_score_model(clf, x_train, x_test, y_train, y_test)
+train_and_score_model(clf, x_train, x_test, y_train, y_test, classes=classes)

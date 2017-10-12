@@ -11,17 +11,19 @@ Functions for fetching different datasets and for visualizing them
 """
 
 
-def get_mnist():
+def get_mnist(show_example=False):
     """
     Fetches the MNIST dataset of handwritten digital characters.
     :return:
     """
     from keras.datasets import mnist
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
+    if show_example:
+        plot_image(x_train[0], title="MNIST example - " + str(y_train[0]))
     return x_train, x_test, y_train, y_test
 
 
-def get_simple_classification_dataset(test_size=0.3):
+def get_simple_classification_dataset(test_size=0.3, print_head=False):
     """
     Fetches a flower dataset.
     x = input features (four features per sample describing some of the flower's properties)
@@ -30,15 +32,18 @@ def get_simple_classification_dataset(test_size=0.3):
     More information on the dataset: http://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html#sklearn.datasets.load_iris
 
     :param test_size: percentage size of the test set compared to the training set
+    :param print_head: if true, print the first data sample
     :return: the splitted dataset in the order of: x_train, x_test, y_train, y_test
     """
     from sklearn.datasets import load_iris
     x, y = load_iris(return_X_y=True)
+    if print_head:
+        print(x[0], "-->", y[0])
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size)
     return x_train, x_test, y_train, y_test
 
 
-def get_classification_dataset(test_size=0.3):
+def get_classification_dataset(test_size=0.3, print_head=False):
     """
     Binary classification problem where the features describe a digitized image of a fine needle aspirate (FNA) of a breast mass.
 
@@ -46,10 +51,13 @@ def get_classification_dataset(test_size=0.3):
     Even more information: https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)
 
     :param test_size: percentage size of the test set compared to the training set
+    :param print_head: if true, print the first data sample
     :return: the splitted dataset in the order of: x_train, x_test, y_train, y_test
     """
     from sklearn.datasets import load_breast_cancer
     x, y = load_breast_cancer(return_X_y=True)
+    if print_head:
+        print(x[0], "-->", y[0])
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size)
     return x_train, x_test, y_train, y_test
 
@@ -77,6 +85,9 @@ def plot_confusion_matrix(y_test, y_pred, classes=None, normalize=True, title='C
         tick_marks = np.arange(len(classes))
         plt.xticks(tick_marks, classes, rotation=45)
         plt.yticks(tick_marks, classes)
+        plt.tight_layout()
+        plt.ylabel('True label')
+        plt.xlabel('Predicted label')
 
     fmt = '.2f' if normalize else 'd'
     thresh = cm.max() / 2.
@@ -97,7 +108,7 @@ def get_my_image(path, wanted_shape=(28, 28)):
     """
     Fetch a grayscale image on your local drive. Resize to a wanted shape is possible.
     :param path: path to image
-    :param wanted_shape: if None, no resizing will be done. Otherwize, the image will be resized to the wanted shape
+    :param wanted_shape: if None, no resizing will be done. Otherwise, the image will be resized to the wanted shape
     :return: the local image as a numpy array
     """
     img = Image.open(path).convert('L')

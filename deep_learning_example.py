@@ -1,4 +1,7 @@
+from time import gmtime, strftime
+
 import numpy as np
+from keras import callbacks
 from keras.layers import Dense
 from keras.models import Sequential
 from keras.utils import to_categorical
@@ -47,8 +50,8 @@ def build_model(input_shape=(784,), num_classes=10):
     """
     # Create the deep neural network
     model = Sequential()
-    model.add(Dense(256, activation='relu', input_shape=input_shape))
-    model.add(Dense(256, activation='relu'))
+    model.add(Dense(60, activation='relu', input_shape=input_shape))
+    model.add(Dense(60, activation='relu'))
     model.add(Dense(num_classes, activation='softmax'))
 
     # Print summary and compile
@@ -82,16 +85,21 @@ batch_size = 128
 epochs = 5
 
 # Fetch the dataset
-x_train, x_test, y_train, y_test = get_mnist()
+x_train, x_test, y_train, y_test = get_mnist(show_example=False)
 
 # Preprocess the dataset
 x_train, x_test, y_train, y_test = preprocess_dataset(x_train, x_test, y_train, y_test, num_classes=n_classes)
 
-# Build the model
+# Build and compile the model
 model = build_model(num_classes=n_classes)
 
-# Train the model
-model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_split=0.1)
+# For visualizing training in TensorBoard
+# Open terminal and cd into this folder (FagkveldML). Type: tensorboard --logdir .\Graph\
+callback = callbacks.TensorBoard(log_dir='./Graph/' + strftime("%Y_%m_%d_%H_%M_%S", gmtime()), histogram_freq=0,
+                                 write_graph=True, write_images=True)
+
+# Train the model with training set
+model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_split=0.1, callbacks=[callback])
 
 # Evaluate the model on test data
 score = model.evaluate(x_test, y_test, verbose=0)
